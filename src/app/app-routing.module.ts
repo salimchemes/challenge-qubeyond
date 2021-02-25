@@ -1,11 +1,11 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { PlanetsComponent } from './features/planets/planets/planets.component';
 
 const routes: Routes = [
   {
     path: '',
-    component: PlanetsComponent,
+    loadChildren: () =>
+      import('./features/planets/planets.module').then((m) => m.PlanetsModule),
   },
 ];
 
