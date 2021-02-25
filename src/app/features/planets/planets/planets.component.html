@@ -1,6 +1,5 @@
 <div class="planet" [formGroup]="planetsForm">
   <h2>Planets</h2>
-
   <mat-form-field>
     <input
       matInput
@@ -9,9 +8,10 @@
     />
   </mat-form-field>
 
-  <ng-container *ngIf="dataSource.loading$ | async">
+  <ng-container *ngIf="dataSource.loading$ | async as isLoading">
     <mat-progress-bar mode="indeterminate"></mat-progress-bar>
   </ng-container>
+
   <mat-table
     class="planets-table mat-elevation-z8"
     [dataSource]="dataSource"
@@ -21,7 +21,7 @@
     matSortDisableClear
   >
     <ng-container matColumnDef="name">
-      <mat-header-cell *matHeaderCellDef mat-sort-header>#</mat-header-cell>
+      <mat-header-cell *matHeaderCellDef mat-sort-header>Name</mat-header-cell>
 
       <mat-cell *matCellDef="let planet">{{ planet.name }}</mat-cell>
     </ng-container>
@@ -68,7 +68,7 @@
 
     <ng-container matColumnDef="orbital_period">
       <mat-header-cell *matHeaderCellDef mat-sort-header
-        >orbital_period</mat-header-cell
+        >Orbital Period</mat-header-cell
       >
 
       <mat-cell class="duration-cell" *matCellDef="let planet">{{
@@ -78,7 +78,7 @@
 
     <ng-container matColumnDef="population">
       <mat-header-cell *matHeaderCellDef mat-sort-header
-        >population</mat-header-cell
+        >Population</mat-header-cell
       >
 
       <mat-cell class="duration-cell" *matCellDef="let planet">{{
@@ -88,7 +88,7 @@
 
     <ng-container matColumnDef="surface_water">
       <mat-header-cell *matHeaderCellDef mat-sort-header
-        >surface_water</mat-header-cell
+        >Surface Water</mat-header-cell
       >
 
       <mat-cell class="duration-cell" *matCellDef="let planet">{{
@@ -98,7 +98,7 @@
 
     <ng-container matColumnDef="terrain">
       <mat-header-cell *matHeaderCellDef mat-sort-header
-        >terrain</mat-header-cell
+        >Terrain</mat-header-cell
       >
 
       <mat-cell class="duration-cell" *matCellDef="let planet">{{
@@ -107,7 +107,7 @@
     </ng-container>
 
     <ng-container matColumnDef="url">
-      <mat-header-cell *matHeaderCellDef mat-sort-header>url</mat-header-cell>
+      <mat-header-cell *matHeaderCellDef>Details</mat-header-cell>
 
       <mat-cell class="duration-cell" *matCellDef="let planet">
         <a [href]="planet.url" target="_blank">view </a>
@@ -117,5 +117,11 @@
     <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
 
     <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+
+    <tr class="mat-row" *matNoDataRow>
+      <td class="mat-cell no-results" colspan="4">
+        No data matching the filter applied
+      </td>
+    </tr>
   </mat-table>
 </div>

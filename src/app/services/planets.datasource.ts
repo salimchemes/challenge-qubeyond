@@ -8,6 +8,7 @@ export class PlanetsDataSource implements DataSource<IPlanet> {
   private planetSubject = new BehaviorSubject<IPlanet[]>([]);
   private loadingSubject = new BehaviorSubject<boolean>(false);
   public loading$ = this.loadingSubject.asObservable();
+  public planets$ = this.planetSubject.asObservable();
   private planets: [] = [];
 
   constructor(private apiService: ApiService) {}
@@ -56,12 +57,12 @@ export class PlanetsDataSource implements DataSource<IPlanet> {
     );
   }
 
-  connect(collectionViewer: CollectionViewer): Observable<IPlanet[]> {
+  connect(_collectionViewer: CollectionViewer): Observable<IPlanet[]> {
     console.log('Connecting data source');
     return this.planetSubject.asObservable();
   }
 
-  disconnect(collectionViewer: CollectionViewer): void {
+  disconnect(_collectionViewer: CollectionViewer): void {
     this.planetSubject.complete();
     this.loadingSubject.complete();
   }

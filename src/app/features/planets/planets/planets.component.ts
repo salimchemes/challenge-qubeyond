@@ -11,6 +11,7 @@ import { MatSort } from '@angular/material/sort';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { ApiService } from 'src/app/services/api.service';
 import { PlanetsDataSource } from 'src/app/services/planets.datasource';
+import { planetColumns } from '../utils/constants';
 
 @Component({
   selector: 'app-planets',
@@ -24,18 +25,7 @@ export class PlanetsComponent implements OnInit, AfterViewInit, OnDestroy {
   planetsForm: FormGroup;
 
   dataSource: PlanetsDataSource;
-  displayedColumns = [
-    'name',
-    'climate',
-    'created',
-    'diameter',
-    'gravity',
-    'orbital_period',
-    'population',
-    'surface_water',
-    'terrain',
-    'url',
-  ];
+  displayedColumns = planetColumns;
   private subscriptions: { [key: string]: any } = {};
 
   constructor(private apiService: ApiService, private fb: FormBuilder) {
