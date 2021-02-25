@@ -1,7 +1,16 @@
-import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import {
+  AfterViewInit,
+  ChangeDetectionStrategy,
+  Component,
+  OnDestroy,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
+import { FormBuilder, FormGroup } from '@angular/forms';
+import { MatSort } from '@angular/material/sort';
+import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { ApiService } from 'src/app/services/api.service';
-import { Observable } from 'rxjs';
-import { IPlanet } from 'src/app/models/planet';
+import { PlanetsDataSource } from 'src/app/services/planets.datasource';
 
 @Component({
   selector: 'app-planets',
@@ -9,12 +18,50 @@ import { IPlanet } from 'src/app/models/planet';
   styleUrls: ['./planets.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class PlanetsComponent implements OnInit {
-  planets$: Observable<IPlanet[]>;
+export class PlanetsComponent implements OnInit, AfterViewInit, OnDestroy {
+  @ViewChild(MatSort, { static: true })
+  sort: MatSort = new MatSort();
+  planetsForm: FormGroup;
 
-  constructor(private apiService: ApiService) {
-    this.planets$ = this.apiService.getPlanets();
+  dataSource: PlanetsDataSource;
+  displayedColumns = [
+    'name',
+    'climate',
+    'created',
+    'diameter',
+    'gravity',
+    'orbital_period',
+    'population',
+    'surface_water',
+    'terrain',
+    'url',
+  ];
+  private subscriptions: { [key: string]: any } = {};
+
+  constructor(private apiService: ApiService, private fb: FormBuilder) {
+    this.dataSource = new PlanetsDataSource(this.apiService);
+    this.planetsForm = this.fb.group({ search: '' });
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.dataSource.loadPlanets();
+  }
+
+  ngAfterViewInit() {
+    this.subscriptions.sort = this.sort.sortChange.subscribe((sortChange) => {
+      this.dataSource.sortPlanets(sortChange.active, sortChange.direction);
+    });
+
+    this.subscriptions.search = this.planetsForm.controls.search.valueChanges
+      .pipe(distinctUntilChanged(), debounceTime(300))
+      .subscribe((searchTerm) => {
+        this.dataSource.searchPlanets(searchTerm);
+      });
+  }
+
+  ngOnDestroy(): void {
+    Object.keys(this.subscriptions).forEach((key) =>
+      this.subscriptions[key].unsubscribe()
+    );
+  }
 }

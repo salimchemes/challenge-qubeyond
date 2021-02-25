@@ -1,5 +1,121 @@
-<ng-container *ngIf="this.planets$ | async as planets">
-  <li *ngFor="let planet of planets">
-    {{ planet.name }}
-  </li>
-</ng-container>
+<div class="planet" [formGroup]="planetsForm">
+  <h2>Planets</h2>
+
+  <mat-form-field>
+    <input
+      matInput
+      placeholder="Search planets by name..."
+      formControlName="search"
+    />
+  </mat-form-field>
+
+  <ng-container *ngIf="dataSource.loading$ | async">
+    <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+  </ng-container>
+  <mat-table
+    class="planets-table mat-elevation-z8"
+    [dataSource]="dataSource"
+    matSort
+    matSortActive="name"
+    matSortDirection="asc"
+    matSortDisableClear
+  >
+    <ng-container matColumnDef="name">
+      <mat-header-cell *matHeaderCellDef mat-sort-header>#</mat-header-cell>
+
+      <mat-cell *matCellDef="let planet">{{ planet.name }}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="climate">
+      <mat-header-cell *matHeaderCellDef mat-sort-header
+        >Climate</mat-header-cell
+      >
+
+      <mat-cell class="description-cell" *matCellDef="let planet">{{
+        planet.climate
+      }}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="created">
+      <mat-header-cell *matHeaderCellDef mat-sort-header
+        >Created</mat-header-cell
+      >
+
+      <mat-cell class="duration-cell" *matCellDef="let planet">{{
+        planet.created | date: "short"
+      }}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="diameter">
+      <mat-header-cell *matHeaderCellDef mat-sort-header
+        >Diameter</mat-header-cell
+      >
+
+      <mat-cell class="duration-cell" *matCellDef="let planet">{{
+        planet.diameter
+      }}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="gravity">
+      <mat-header-cell *matHeaderCellDef mat-sort-header
+        >Gravity</mat-header-cell
+      >
+
+      <mat-cell class="duration-cell" *matCellDef="let planet">{{
+        planet.gravity
+      }}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="orbital_period">
+      <mat-header-cell *matHeaderCellDef mat-sort-header
+        >orbital_period</mat-header-cell
+      >
+
+      <mat-cell class="duration-cell" *matCellDef="let planet">{{
+        planet.orbital_period
+      }}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="population">
+      <mat-header-cell *matHeaderCellDef mat-sort-header
+        >population</mat-header-cell
+      >
+
+      <mat-cell class="duration-cell" *matCellDef="let planet">{{
+        planet.population
+      }}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="surface_water">
+      <mat-header-cell *matHeaderCellDef mat-sort-header
+        >surface_water</mat-header-cell
+      >
+
+      <mat-cell class="duration-cell" *matCellDef="let planet">{{
+        planet.surface_water
+      }}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="terrain">
+      <mat-header-cell *matHeaderCellDef mat-sort-header
+        >terrain</mat-header-cell
+      >
+
+      <mat-cell class="duration-cell" *matCellDef="let planet">{{
+        planet.terrain
+      }}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="url">
+      <mat-header-cell *matHeaderCellDef mat-sort-header>url</mat-header-cell>
+
+      <mat-cell class="duration-cell" *matCellDef="let planet">
+        <a [href]="planet.url" target="_blank">view </a>
+      </mat-cell>
+    </ng-container>
+
+    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+
+    <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+  </mat-table>
+</div>
