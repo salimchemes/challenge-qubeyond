@@ -10,3 +10,5 @@ export const planetColumns = [
   'terrain',
   'url',
 ];
+
+export const noResult = 'No data matching the filter applied';

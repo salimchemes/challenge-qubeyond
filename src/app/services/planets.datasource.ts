@@ -26,6 +26,9 @@ export class PlanetsDataSource implements DataSource<IPlanet> {
   }
 
   sortPlanets(sortType: string, sortOrder: string) {
+    // notes: ideally, the API should support pagination, sorting and searching. It only does support search.
+    // For simplicity I have implemented sortPlanets and searchPlanets in the FE. Once having BE supporting these features,
+    // loadPlanet() should be the responsible.
     let sortedPlanets: [] = [];
     if (this.isNumericSort(sortType)) {
       sortedPlanets =
@@ -43,6 +46,9 @@ export class PlanetsDataSource implements DataSource<IPlanet> {
   }
 
   searchPlanets(searchTerm: string) {
+    // notes: ideally, the API should support pagination, sorting and searching. It only does support search.
+    // For simplicity I have implemented sortPlanets and searchPlanets in the FE. Once having BE supporting these features,
+    // loadPlanet() should be the responsible.
     const filteredPlanets = this.planets.filter((planet: IPlanet) =>
       planet.name.toLowerCase().includes(searchTerm.toLowerCase())
     );
@@ -53,6 +59,7 @@ export class PlanetsDataSource implements DataSource<IPlanet> {
     return (
       sortType === 'population' ||
       sortType === 'orbital_period' ||
+      sortType === 'diameter' ||
       sortType === 'surface_water'
     );
   }
